@@ -1,6 +1,6 @@
 ---
 description: Compare a ported page against the mirrored original, section by section, on height and position.
-argument-hint: <page-slug> [--viewport 1440,768,390]
+argument-hint: "<page-slug> [--viewport 1440,768,390]"
 allowed-tools: Bash, Read
 ---
 

@@ -1,5 +1,6 @@
 {
   "name": "wp-to-code",
+  "description": "Tools for porting WordPress sites to other stacks by measuring the original and diffing rendered geometry.",
   "owner": {
     "name": "Abdulkader Safi",
     "email": "safi.abdulkader@gmail.com",

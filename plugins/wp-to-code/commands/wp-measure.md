@@ -1,6 +1,6 @@
 ---
 description: Dump the layout tree, section list, content or interactive inventory for a page to a file.
-argument-hint: <page-slug> [--side original|port] [--mode tree|sections|content|interactive]
+argument-hint: "<page-slug> [--side original|port] [--mode tree|sections|content|interactive]"
 allowed-tools: Bash, Read, Grep
 ---
 
