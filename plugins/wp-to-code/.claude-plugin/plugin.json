@@ -11,7 +11,15 @@
   "homepage": "https://github.com/Abdulkader-Safi/wp-to-code",
   "repository": "https://github.com/Abdulkader-Safi/wp-to-code",
   "license": "MIT",
-  "keywords": ["wordpress", "elementor", "tailwind", "migration", "port", "laravel", "nextjs"],
+  "keywords": [
+    "wordpress",
+    "elementor",
+    "tailwind",
+    "migration",
+    "port",
+    "laravel",
+    "nextjs"
+  ],
   "hooks": "./hooks/hooks.json",
   "userConfig": {
     "chrome_path": {

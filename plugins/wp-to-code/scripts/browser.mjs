@@ -77,6 +77,9 @@ export async function prepare(browser, url, width, { timeout = 45000 } = {}) {
   // Walk the full page so lazy content and content-visibility sections lay out,
   // then return to the top so every rect is measured from the same origin.
   await page.evaluate(async () => {
+    // Timers, not requestAnimationFrame. Headless Chrome throttles rAF when
+    // nothing is compositing, and a nested rAF await can simply never resolve.
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
     const step = Math.max(400, window.innerHeight - 100);
     let y = 0;
     // Re-read scrollHeight each turn: loading content makes the page grow.
@@ -84,21 +87,25 @@ export async function prepare(browser, url, width, { timeout = 45000 } = {}) {
       const max = document.documentElement.scrollHeight;
       if (y >= max) break;
       window.scrollTo(0, y);
-      await new Promise((r) =>
-        requestAnimationFrame(() => requestAnimationFrame(r)),
-      );
+      await wait(50);
       y += step;
     }
     window.scrollTo(0, 0);
-    await new Promise((r) => setTimeout(r, 120));
+    await wait(120);
   });
 
-  await page.evaluate(async () => {
-    await document.fonts.ready;
-    await Promise.all(
-      [...document.images].map((img) => img.decode().catch(() => {})),
-    );
-  });
+  // img.decode() never settles for an image whose source never resolves, and a
+  // mirrored page always has a few of those. Await on a budget and report what
+  // did not settle rather than hanging, or silently measuring a page mid-reflow.
+  const pendingImages = await page.evaluate(async (budget) => {
+    const cap = (p) => Promise.race([p, new Promise((r) => setTimeout(r, budget))]);
+    await cap(document.fonts.ready);
+    const images = [...document.images];
+    let settled = 0;
+    const done = () => settled++;
+    await cap(Promise.all(images.map((img) => img.decode().then(done, done))));
+    return images.length - settled;
+  }, 5000);
 
   // Network may still be settling after the scroll pass. Do not fail on it.
   await page.waitForLoadState("networkidle", { timeout: 8000 }).catch(() => {});
@@ -108,7 +115,7 @@ export async function prepare(browser, url, width, { timeout = 45000 } = {}) {
     () => document.documentElement.clientWidth,
   );
 
-  return { page, context, clientWidth };
+  return { page, context, clientWidth, pendingImages };
 }
 
 /** Pins every video to a fixed frame so visual comparison is deterministic. */
