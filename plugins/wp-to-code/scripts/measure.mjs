@@ -76,11 +76,13 @@ try {
     page: tab,
     context,
     clientWidth,
+    pendingImages,
   } = await prepare(browser, url, width);
   result = await tab.evaluate(collect, root);
   result.url = url;
   result.viewport = width;
   result.clientWidth = clientWidth;
+  result.pendingImages = pendingImages;
   await context.close();
 } finally {
   await browser.close();
@@ -105,6 +107,11 @@ console.log(
 );
 console.log(`  ${url}`);
 console.log(`  → ${relative(process.cwd(), file)}`);
+if (result.pendingImages > 0) {
+  console.log(
+    `  ${result.pendingImages} image(s) never finished loading. Anything sized by those images may still be mid-reflow, so treat their heights as unreliable.`,
+  );
+}
 
 if (values.mode === "tree") {
   const sizes = [...new Set(result.nodes.map((n) => n.font.size))].sort(

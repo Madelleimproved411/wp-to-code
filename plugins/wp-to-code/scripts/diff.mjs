@@ -88,6 +88,7 @@ async function measure(url, root, width) {
     page: tab,
     context,
     clientWidth,
+    pendingImages,
   } = await prepare(browser, url, width);
   const data = await tab.evaluate(collectSections, root);
   await context.close();
@@ -97,6 +98,7 @@ async function measure(url, root, width) {
     );
   }
   data.clientWidth = clientWidth;
+  data.pendingImages = pendingImages;
   return data;
 }
 
@@ -137,6 +139,7 @@ function compare(a, b, width, tol) {
   return {
     viewport: width,
     clientWidth: { original: a.clientWidth, port: b.clientWidth },
+    pendingImages: { original: a.pendingImages, port: b.pendingImages },
     count: { original: a.sections.length, port: b.sections.length },
     rootHeight: { original: a.rootHeight, port: b.rootHeight },
     documentHeight: { original: a.documentHeight, port: b.documentHeight },
@@ -156,6 +159,13 @@ function print(r) {
   if (r.count.original !== r.count.port) {
     console.log(
       `  section count: original ${r.count.original}, port ${r.count.port}`,
+    );
+  }
+  const stuck = r.pendingImages.original + r.pendingImages.port;
+  if (stuck > 0) {
+    console.log(
+      `  ${stuck} image(s) never finished loading (original ${r.pendingImages.original}, port ${r.pendingImages.port}). ` +
+        `Deltas on image-sized sections may be reflow, not your markup.`,
     );
   }
 

@@ -8,7 +8,7 @@ Port the page the user named: `$ARGUMENTS`.
 
 **Read the `porting-gotchas` skill first.** It lists the failures that pass a height check, and reading it after writing the markup is worth much less than reading it before.
 
-Then read the adapter for the stack in `target.stack`: `${CLAUDE_PLUGIN_ROOT}/adapters/<stack>.md`.
+Then read the adapter for the stack in `target.stack`: `${CLAUDE_PLUGIN_ROOT}/adapters/<stack>.md`. Only `laravel-blade`, `next-app`, `astro` and `plain-html` have one. For any other stack read `${CLAUDE_PLUGIN_ROOT}/adapters/_generic.md`, which tells you what to work out from the project itself.
 
 ## Order
 
