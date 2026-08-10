@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.png" alt="wp-to-code — measured, not redrawn" width="100%">
+</p>
+
 # wp-to-code
 
 A Claude Code plugin for porting a WordPress site to another stack by measuring the original, not by looking at it.
