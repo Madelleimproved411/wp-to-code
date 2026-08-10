@@ -1,4 +1,5 @@
-node_modules/
+node_modules
 .wp-to-code/
 .DS_Store
 *.log
+package-lock.json
