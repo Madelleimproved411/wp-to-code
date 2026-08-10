@@ -9,7 +9,22 @@ DEST="${CLAUDE_PLUGIN_DATA}"
 
 mkdir -p "$DEST"
 
+# Point the scripts directory at the installed modules so `node script.mjs`
+# resolves them without every caller having to set NODE_PATH. Recreated each
+# session, because CLAUDE_PLUGIN_ROOT moves when the plugin updates.
+# Skipped when a real node_modules is already there: that means someone ran
+# npm install in the scripts directory to work on the plugin, and `ln -sfn`
+# would drop the link *inside* that directory rather than replacing it.
+link_modules() {
+  local target="${CLAUDE_PLUGIN_ROOT}/scripts/node_modules"
+  if [ -d "$target" ] && [ ! -L "$target" ]; then
+    return
+  fi
+  ln -sfn "$DEST/node_modules" "$target" 2>/dev/null || true
+}
+
 if diff -q "$SRC" "$DEST/package.json" >/dev/null 2>&1; then
+  link_modules
   exit 0
 fi
 
@@ -21,6 +36,7 @@ fi
 cp "$SRC" "$DEST/package.json"
 
 if (cd "$DEST" && npm install --silent --no-audit --no-fund >/dev/null 2>&1); then
+  link_modules
   echo "wp-to-code: dependencies installed."
 else
   # Leave no stale manifest behind, so the next session retries the install.
