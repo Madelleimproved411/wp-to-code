@@ -1,0 +1,24 @@
+{
+  "name": "wp-to-code",
+  "displayName": "WordPress to code",
+  "version": "0.1.0",
+  "description": "Port a WordPress site to any stack by measuring the original and diffing rendered geometry.",
+  "author": {
+    "name": "Abdulkader Safi",
+    "email": "safi.abdulkader@gmail.com",
+    "url": "https://github.com/Abdulkader-Safi"
+  },
+  "homepage": "https://github.com/Abdulkader-Safi/wp-to-code",
+  "repository": "https://github.com/Abdulkader-Safi/wp-to-code",
+  "license": "MIT",
+  "keywords": ["wordpress", "elementor", "tailwind", "migration", "port", "laravel", "nextjs"],
+  "hooks": "./hooks/hooks.json",
+  "userConfig": {
+    "chrome_path": {
+      "type": "file",
+      "title": "Chrome executable",
+      "description": "Leave blank to autodetect an installed Chrome. Set this only if Chrome lives somewhere unusual.",
+      "required": false
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "wp-to-code-scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser measurement and mirroring scripts for the wp-to-code plugin.",
+  "dependencies": {
+    "playwright-core": "^1.49.0"
+  }
+}

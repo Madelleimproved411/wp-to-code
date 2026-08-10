@@ -1,0 +1,15 @@
+{
+  "name": "wp-to-code",
+  "owner": {
+    "name": "Abdulkader Safi",
+    "email": "safi.abdulkader@gmail.com",
+    "url": "https://github.com/Abdulkader-Safi"
+  },
+  "plugins": [
+    {
+      "name": "wp-to-code",
+      "source": "./plugins/wp-to-code",
+      "description": "Port a WordPress site to Laravel, Next, Astro or plain HTML by measuring the original and diffing rendered geometry."
+    }
+  ]
+}
