@@ -56,13 +56,13 @@ Only one thing is genuinely builder-specific, and it is a single config line: th
 
 Targets are short adapter files describing where components go and what the syntax is.
 
-| Stack | Adapter |
-| --- | --- |
-| Laravel Blade | `adapters/laravel-blade.md` |
-| Next.js App Router | `adapters/next-app.md` |
-| Astro | `adapters/astro.md` |
-| Plain HTML and CSS | `adapters/plain-html.md` |
-| Nuxt, Svelte, Vue, React, Next Pages, block themes | `adapters/_generic.md` |
+| Stack                                              | Adapter                     |
+| -------------------------------------------------- | --------------------------- |
+| Laravel Blade                                      | `adapters/laravel-blade.md` |
+| Next.js App Router                                 | `adapters/next-app.md`      |
+| Astro                                              | `adapters/astro.md`         |
+| Plain HTML and CSS                                 | `adapters/plain-html.md`    |
+| Nuxt, Svelte, Vue, React, Next Pages, block themes | `adapters/_generic.md`      |
 
 Writing a real adapter is about forty lines: a six-row table, one worked component, and the notes that bit you.
 
