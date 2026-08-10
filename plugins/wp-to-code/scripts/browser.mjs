@@ -98,7 +98,8 @@ export async function prepare(browser, url, width, { timeout = 45000 } = {}) {
   // mirrored page always has a few of those. Await on a budget and report what
   // did not settle rather than hanging, or silently measuring a page mid-reflow.
   const pendingImages = await page.evaluate(async (budget) => {
-    const cap = (p) => Promise.race([p, new Promise((r) => setTimeout(r, budget))]);
+    const cap = (p) =>
+      Promise.race([p, new Promise((r) => setTimeout(r, budget))]);
     await cap(document.fonts.ready);
     const images = [...document.images];
     let settled = 0;

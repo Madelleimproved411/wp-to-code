@@ -14,11 +14,11 @@ NODE_PATH="${CLAUDE_PLUGIN_DATA}/node_modules" \
 
 ## Modes
 
-| Mode | Use it for |
-| --- | --- |
-| `sections` | First look at a page. Top-level blocks with height, top, padding, background. |
-| `tree` | Writing a section. Every element with text or an image, with rect, font, margin, padding. |
-| `content` | Text, image URLs, hrefs, alt text. Nothing about geometry. |
+| Mode          | Use it for                                                                                  |
+| ------------- | ------------------------------------------------------------------------------------------- |
+| `sections`    | First look at a page. Top-level blocks with height, top, padding, background.               |
+| `tree`        | Writing a section. Every element with text or an image, with rect, font, margin, padding.   |
+| `content`     | Text, image URLs, hrefs, alt text. Nothing about geometry.                                  |
 | `interactive` | Inventory of sliders, menus, accordions, forms and video that need behaviour reimplemented. |
 
 Run `sections` first. Only run `tree` for the section you are about to write.

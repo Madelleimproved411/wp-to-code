@@ -211,6 +211,92 @@ export function collectContent(rootSel) {
 }
 
 /**
+ * Design-token census. Reads computed styles, not the stylesheet: builder CSS is
+ * generated and unreadable, and the browser has already resolved it.
+ *
+ * Line-heights are reported paired with their font size, because the pair is what
+ * you write. Breakpoints come from the real media queries in the page's own CSS,
+ * since a builder's defaults are editable per site and guessing them is how a
+ * port ships a layout that only works at one width.
+ */
+export function collectTheme(rootSel) {
+  const root = document.querySelector(rootSel) || document.body;
+  const bump = (map, key) => map.set(key, (map.get(key) ?? 0) + 1);
+
+  const sizes = new Map();
+  const pairs = new Map();
+  const families = new Map();
+  const colors = new Map();
+  const backgrounds = new Map();
+  const radii = new Map();
+  const spacing = new Map();
+  const weights = new Map();
+
+  const px = (v) => Math.round(parseFloat(v) * 100) / 100;
+
+  for (const el of root.querySelectorAll('*')) {
+    const r = el.getBoundingClientRect();
+    if (r.width === 0 && r.height === 0) continue;
+    const cs = getComputedStyle(el);
+
+    const hasText = [...el.childNodes].some(
+      (n) => n.nodeType === 3 && n.textContent.trim(),
+    );
+    if (hasText) {
+      const size = px(cs.fontSize);
+      const lh = cs.lineHeight === 'normal' ? 'normal' : px(cs.lineHeight);
+      bump(sizes, size);
+      bump(pairs, `${size}/${lh}`);
+      bump(families, cs.fontFamily.split(',')[0].replace(/["']/g, ''));
+      bump(weights, cs.fontWeight);
+      bump(colors, cs.color);
+    }
+    if (cs.backgroundColor !== 'rgba(0, 0, 0, 0)') bump(backgrounds, cs.backgroundColor);
+    if (cs.borderRadius !== '0px') bump(radii, cs.borderRadius);
+    for (const v of [cs.paddingTop, cs.paddingBottom, cs.marginTop, cs.marginBottom]) {
+      const n = px(v);
+      if (n > 0) bump(spacing, n);
+    }
+  }
+
+  // Real breakpoints, from the page's own media queries.
+  const breakpoints = new Set();
+  for (const sheet of document.styleSheets) {
+    let rules;
+    try {
+      rules = sheet.cssRules;
+    } catch {
+      continue; // cross-origin stylesheet
+    }
+    for (const rule of rules) {
+      if (rule.constructor.name !== 'CSSMediaRule') continue;
+      for (const m of rule.conditionText.matchAll(/(\d+(?:\.\d+)?)px/g)) {
+        breakpoints.add(Number(m[1]));
+      }
+    }
+  }
+
+  const top = (map, limit = 40) =>
+    [...map.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, limit)
+      .map(([value, count]) => ({ value, count }));
+
+  return {
+    root: rootSel,
+    fontSizes: [...sizes.keys()].sort((a, b) => a - b),
+    sizeLineHeight: top(pairs),
+    families: top(families, 10),
+    weights: top(weights, 10),
+    colors: top(colors, 30),
+    backgrounds: top(backgrounds, 30),
+    radii: top(radii, 15),
+    spacing: top(spacing, 40),
+    breakpoints: [...breakpoints].sort((a, b) => a - b),
+  };
+}
+
+/**
  * Interactive widgets present on the page. Inventory only: this lists what
  * behaviour needs reimplementing, it does not port anything.
  */
